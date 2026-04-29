@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOOR TRAVELS - Ultimate System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f0f2f5; padding: 15px; font-family: 'Poppins', sans-serif; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        .header {
+            background: linear-gradient(135deg, #0a2b3e, #15556b);
+            border-radius: 20px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .header-left h1 { font-size: 26px; background: linear-gradient(135deg, #FFD700, #FFA500); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .header-left p { font-size: 11px; color: #cbd5e1; margin-top: 5px; }
+        .logo-box { width: 75px; height: 75px; background: white; border-radius: 15px; display: flex; align-items: center; justify-content: center; padding: 5px; }
+        .logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        
+        .search-bar {
+            background: white;
+            border-radius: 16px;
+            padding: 12px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+        .search-group { display: flex; flex-direction: column; gap: 4px; }
+        .search-group label { font-size: 12px; font-weight: 600; }
+        .search-group input { padding: 8px 15px; border: 1px solid #ddd; border-radius: 25px; width: 200px; font-size: 13px; }
+        .search-group button { background: #15556b; padding: 8px 20px; border-radius: 25px; border: none; color: white; cursor: pointer; font-size: 13px; }
+        
+        .form-card {
+            background: white;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+        .form-title {
+            background: #d4a574;
+            color: white;
+            padding: 8px 22px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 18px;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .input-field { margin-bottom: 10px; }
+        .input-field label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+        .input-field input, .input-field select, .input-field textarea { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 13px; }
+        .required { color: #c0392b; }
+        button { background: #15556b; color: white; border: none; padding: 10px 25px; border-radius: 30px; cursor: pointer; font-weight: 600; margin-top: 10px; font-size: 14px; }
+        
+        .history-item {
+            background: white;
+            border-radius: 15px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 5px solid #d4a574;
+        }
+        .history-actions { margin-top: 8px; }
+        .history-actions button { padding: 5px 12px; font-size: 11px; margin-right: 8px; margin-top: 0; }
+        
+        /* PRINT STYLES - ULTRA BIG SIZE */
+        .print-content { display: none; }
+        
+        @media print {
+            body * { visibility: hidden; }
+            .print-content, .print-content * { visibility: visible; }
+            .print-content {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 2mm;
+            }
+            @page {
+                size: A4;
+                margin: 1mm;
+            }
+        }
+        
+        .print-ticket {
+            width: 100%;
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            font-family: 'Poppins', sans-serif;
+        }
+        .print-copy {
+            border: 2px dashed #c6904a;
+            padding: 5px;
+            margin-bottom: 5px;
+        }
+        .print-copy-header {
+            text-align: right;
+            font-size: 14px;
+            font-weight: bold;
+            color: #c6904a;
+            margin-bottom: 3px;
+        }
+        .logo-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            border-bottom: 2px solid #e0c3a0;
+            padding-bottom: 5px;
+        }
+        .logo-header img { max-width: 220px; width: 220px; height: auto; }
+        .company-info h3 { font-size: 35px; color: #1a4a6f; margin-bottom: 3px; line-height: 1.1; }
+        .company-info .address { font-size: 13px; color: #555; line-height: 1.2; margin-bottom: 2px; }
+        .company-info .phone { font-size: 13px; color: #555; line-height: 1.2; }
+        .print-title { text-align: center; margin: 5px 0; }
+        .print-title h2 { font-size: 24px; color: #1a5276; }
+        .info-table { border: 1px solid #e2c3a0; border-radius: 5px; overflow: hidden; margin-bottom: 5px; }
+        .info-table-title { background: #d4a574; padding: 4px 8px; font-weight: bold; font-size: 19px; color: white; }
+        .info-table-content { padding: 5px; }
+        .info-row { display: flex; margin-bottom: 4px; font-size: 21px; }
+        .info-label { width: 150px; font-weight: bold; font-size: 19px; }
+        .info-value { flex: 1; border-bottom: 0.5px dotted #ccc; padding-left: 5px; font-size: 18px; }
+        .signature-area { display: flex; justify-content: flex-end; margin-top: 8px; }
+        .sign-line { width: 150px; text-align: center; border-top: 1px solid #333; padding-top: 5px; font-size: 16px; }
+        .cut-line { text-align: center; border-top: 2px dashed #b8772e; margin: 3px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="header-left">
+            <h1>NOOR TRAVELS & TOURISM</h1>
+            <p>📍 AL SALAM STREET, SALALAH, OMAN | 📞 +968 92658290 | +968 90747060</p>
+        </div>
+        <div class="logo-box">
+            <img id="mainLogo" src="https://img.sanishtech.com/u/220bdbafe304129be6eb14cc0de0d134.png" alt="Logo">
+        </div>
+    </div>
+
+    <div class="search-bar">
+        <div class="search-group"><label>🔍 Customer Name</label><input type="text" id="searchName" placeholder="Enter name"></div>
+        <div class="search-group"><label>📅 Flight Date</label><input type="date" id="searchDate"></div>
+        <div class="search-group"><button onclick="searchTickets()">SEARCH</button></div>
+        <div class="search-group"><button onclick="resetSearch()" style="background:#6c757d;">RESET</button></div>
+    </div>
+
+    <div class="form-card">
+        <div class="form-title">✈️ TICKET BOOKING</div>
+        <div class="two-col">
+            <div class="input-field"><label><span class="required">*</span> Customer Name</label><input type="text" id="tName"></div>
+            <div class="input-field"><label><span class="required">*</span> Mobile Number</label><input type="text" id="tMobile" onkeypress="return event.charCode>=48 && event.charCode<=57"></div>
+            <div class="input-field"><label><span class="required">*</span> Passport Number</label><input type="text" id="tPassport"></div>
+            <div class="input-field"><label><span class="required">*</span> Travel Sector</label><input type="text" id="tSector" placeholder="Salalah → Dhaka"></div>
+            <div class="input-field"><label>Airlines</label><input type="text" id="tAirlines" placeholder="Oman Air"></div>
+            <div class="input-field"><label><span class="required">*</span> Booking Date</label><input type="date" id="tBookDate"></div>
+            <div class="input-field"><label><span class="required">*</span> Flight Date</label><input type="date" id="tFlightDate"></div>
+            <div class="input-field"><label>Total (OMR)</label><input type="number" id="tTotal" step="any" value="0"></div>
+            <div class="input-field"><label>Paid (OMR)</label><input type="number" id="tPaid" step="any" value="0"></div>
+            <div class="input-field"><label>Payment Method</label><select id="tMethod"><option>Cash</option><option>Transfer</option></select></div>
+        </div>
+        <button onclick="saveTicket()">💾 SAVE TICKET</button>
+    </div>
+
+    <div class="form-card">
+        <div class="form-title">🛂 PASSPORT APPLICATION</div>
+        <div class="two-col">
+            <div class="input-field"><label><span class="required">*</span> Application Date</label><input type="date" id="pDate"></div>
+            <div class="input-field"><label>Bill (OMR)</label><input type="number" id="pBill" step="any" value="0"></div>
+            <div class="input-field"><label><span class="required">*</span> Passport Number</label><input type="text" id="pPassportNo"></div>
+            <div class="input-field"><label><span class="required">*</span> Oman Number</label><input type="text" id="pOman" onkeypress="return event.charCode>=48 && event.charCode<=57"></div>
+            <div class="input-field"><label><span class="required">*</span> Bangladesh Number</label><input type="text" id="pBd" onkeypress="return event.charCode>=48 && event.charCode<=57"></div>
+            <div class="input-field" style="grid-column: span 2;"><label>Notes</label><textarea id="pNotes" rows="2"></textarea></div>
+        </div>
+        <button onclick="savePassport()">💾 SAVE PASSPORT</button>
+    </div>
+
+    <div class="history-list">
+        <h3>📋 TICKETS (<span id="ticketCount">0</span>)</h3>
+        <div id="ticketList"></div>
+        <h3 style="margin-top: 20px;">📘 PASSPORTS (<span id="passportCount">0</span>)</h3>
+        <div id="passportList"></div>
+    </div>
+</div>
+
+<div id="printContainer" class="print-content"></div>
+
+<script>
+    const LOGO_URL = "https://img.sanishtech.com/u/220bdbafe304129be6eb14cc0de0d134.png";
+    let tickets = JSON.parse(localStorage.getItem('tickets_noor') || '[]');
+    let passports = JSON.parse(localStorage.getItem('passports_noor') || '[]');
+
+    function saveTicket() {
+        let name = document.getElementById('tName').value.trim();
+        let mobile = document.getElementById('tMobile').value.trim();
+        let passport = document.getElementById('tPassport').value.trim();
+        let sector = document.getElementById('tSector').value.trim();
+        let airlines = document.getElementById('tAirlines').value.trim() || 'N/A';
+        let bookDate = document.getElementById('tBookDate').value;
+        let flightDate = document.getElementById('tFlightDate').value;
+        let total = parseFloat(document.getElementById('tTotal').value) || 0;
+        let paid = parseFloat(document.getElementById('tPaid').value) || 0;
+        let method = document.getElementById('tMethod').value;
+
+        if (!name || !mobile || !passport || !sector || !bookDate || !flightDate) {
+            alert("Please fill all required fields!");
+            return;
+        }
+
+        let ticket = { id: Date.now(), name, mobile: '+968 ' + mobile, passport, sector, airlines, bookDate, flightDate, total, paid, method, due: (total - paid).toFixed(2) };
+        tickets.push(ticket);
+        localStorage.setItem('tickets_noor', JSON.stringify(tickets));
+        renderTickets();
+        clearTicketForm();
+        alert("✓ Ticket saved!");
+    }
+
+    function clearTicketForm() {
+        document.getElementById('tName').value = '';
+        document.getElementById('tMobile').value = '';
+        document.getElementById('tPassport').value = '';
+        document.getElementById('tSector').value = '';
+        document.getElementById('tAirlines').value = '';
+        document.getElementById('tTotal').value = '0';
+        document.getElementById('tPaid').value = '0';
+        let today = new Date().toISOString().split('T')[0];
+        document.getElementById('tBookDate').value = today;
+        document.getElementById('tFlightDate').value = today;
+    }
+
+    function deleteTicket(id) {
+        if (confirm("Delete this ticket?")) {
+            tickets = tickets.filter(t => t.id != id);
+            localStorage.setItem('tickets_noor', JSON.stringify(tickets));
+            renderTickets();
+        }
+    }
+
+    function savePassport() {
+        let date = document.getElementById('pDate').value;
+        let passportNo = document.getElementById('pPassportNo').value.trim();
+        let oman = document.getElementById('pOman').value.trim();
+        let bd = document.getElementById('pBd').value.trim();
+        let bill = parseFloat(document.getElementById('pBill').value) || 0;
+        let notes = document.getElementById('pNotes').value;
+
+        if (!date || !passportNo || !oman || !bd) {
+            alert("Please fill all required fields!");
+            return;
+        }
+
+        let passport = { id: Date.now(), date, bill, passportNo, oman: '+968 ' + oman, bd: '+88 ' + bd, notes };
+        passports.push(passport);
+        localStorage.setItem('passports_noor', JSON.stringify(passports));
+        renderPassports();
+        clearPassportForm();
+        alert("✓ Passport saved!");
+    }
+
+    function clearPassportForm() {
+        document.getElementById('pDate').value = '';
+        document.getElementById('pBill').value = '0';
+        document.getElementById('pPassportNo').value = '';
+        document.getElementById('pOman').value = '';
+        document.getElementById('pBd').value = '';
+        document.getElementById('pNotes').value = '';
+        let today = new Date().toISOString().split('T')[0];
+        document.getElementById('pDate').value = today;
+    }
+
+    function deletePassport(id) {
+        if (confirm("Delete this record?")) {
+            passports = passports.filter(p => p.id != id);
+            localStorage.setItem('passports_noor', JSON.stringify(passports));
+            renderPassports();
+        }
+    }
+
+    function searchTickets() {
+        let name = document.getElementById('searchName').value.toLowerCase();
+        let date = document.getElementById('searchDate').value;
+        let filtered = tickets.filter(t => {
+            if (name && !t.name.toLowerCase().includes(name)) return false;
+            if (date && t.flightDate !== date) return false;
+            return true;
+        });
+        renderTickets(filtered);
+    }
+
+    function resetSearch() {
+        document.getElementById('searchName').value = '';
+        document.getElementById('searchDate').value = '';
+        renderTickets(tickets);
+    }
+
+    function renderTickets(list = null) {
+        let data = list || tickets;
+        let container = document.getElementById('ticketList');
+        document.getElementById('ticketCount').innerText = data.length;
+        if (data.length === 0) { container.innerHTML = '<div style="background:white; padding:15px; border-radius:12px;">No tickets</div>'; return; }
+        container.innerHTML = data.map(t => `
+            <div class="history-item">
+                <div style="display:flex; justify-content:space-between;"><strong>✈️ ${escapeHtml(t.name)}</strong><span>Due: ${t.due} OMR</span></div>
+                <div style="font-size:12px;">📞 ${escapeHtml(t.mobile)} | ${escapeHtml(t.sector)} | ${t.flightDate}</div>
+                <div class="history-actions"><button onclick='printTicket(${t.id})'>PRINT</button><button onclick='deleteTicket(${t.id})' style="background:#c0392b;">DELETE</button></div>
+            </div>
+        `).join('');
+    }
+
+    function renderPassports() {
+        let container = document.getElementById('passportList');
+        document.getElementById('passportCount').innerText = passports.length;
+        if (passports.length === 0) { container.innerHTML = '<div style="background:white; padding:15px; border-radius:12px;">No records</div>'; return; }
+        container.innerHTML = passports.map(p => `
+            <div class="history-item">
+                <div><strong>📅 ${p.date}</strong> | Bill: ${p.bill} OMR</div>
+                <div style="font-size:12px;">🛂 ${escapeHtml(p.passportNo)} | ${escapeHtml(p.oman)} | ${escapeHtml(p.bd)}</div>
+                <div class="history-actions"><button onclick='printPassport(${p.id})'>PRINT</button><button onclick='deletePassport(${p.id})' style="background:#c0392b;">DELETE</button></div>
+            </div>
+        `).join('');
+    }
+
+    function printTicket(id) {
+        let t = tickets.find(t => t.id == id);
+        if (!t) return;
+        let win = window.open('', '_blank');
+        win.document.write(getTicketHTML(t));
+        win.document.close();
+        win.print();
+    }
+
+    function printPassport(id) {
+        let p = passports.find(p => p.id == id);
+        if (!p) return;
+        let win = window.open('', '_blank');
+        win.document.write(getPassportHTML(p));
+        win.document.close();
+        win.print();
+    }
+
+    function getTicketHTML(t) {
+        return `<!DOCTYPE html>
+        <html>
+        <head><meta charset="UTF-8"><title>NOOR TICKET</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { background: white; font-family: 'Poppins', Arial, sans-serif; padding: 2mm; }
+            .print-copy { border: 2px dashed #c6904a; padding: 5px; margin-bottom: 5px; }
+            .print-copy-header { text-align: right; font-size: 14px; font-weight: bold; color: #c6904a; margin-bottom: 3px; }
+            .logo-header { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; border-bottom: 2px solid #e0c3a0; padding-bottom: 5px; }
+            .logo-header img { max-width: 220px; width: 220px; height: auto; }
+            .company-info h2 { font-size: 35px; color: #1a4a6f; margin-bottom: 3px; line-height: 1.1; }
+            .company-info .address { font-size: 12px; color: #555; margin-bottom: 2px; }
+            .company-info .phone { font-size: 12px; color: #555; }
+            .print-title { text-align: center; margin: 5px 0; }
+            .print-title h3 { font-size: 24px; color: #1a5276; }
+            .info-table { border: 1px solid #e2c3a0; border-radius: 5px; margin-bottom: 5px; }
+            .info-table-title { background: #d4a574; padding: 4px 8px; font-weight: bold; font-size: 19px; color: white; }
+            .info-table-content { padding: 5px; }
+            .info-row { display: flex; margin-bottom: 4px; font-size: 21px; }
+            .info-label { width: 150px; font-weight: bold; font-size: 19px; }
+            .info-value { flex: 1; border-bottom: 0.5px dotted #ccc; padding-left: 5px; font-size: 18px; }
+            .signature-area { display: flex; justify-content: flex-end; margin-top: 8px; }
+            .sign-line { width: 150px; text-align: center; border-top: 1px solid #333; padding-top: 5px; font-size: 16px; }
+            .cut-line { text-align: center; border-top: 2px dashed #b8772e; margin: 3px 0; }
+            @media print { @page { size: A4; margin: 0; } body { margin: 0; padding: 1mm; } }
+        </style>
+        </head>
+        <body>
+            <div class="print-copy">
+                <div class="print-copy-header">🏠 CUSTOMER COPY</div>
+                <div class="logo-header"><img src="${LOGO_URL}"><div class="company-info"><h2>NOOR TRAVELS & TOURISM</h2><div class="address">📍 AL SALAM STREET CARE PHONE, SALALAH, OMAN</div><div class="phone">📞 +968 92658290 | +968 90747060</div></div></div>
+                <div class="print-title"><h3>AIR TICKET VOUCHER</h3></div>
+                <div class="info-table"><div class="info-table-title">📋 CUSTOMER DETAILS</div><div class="info-table-content">
+                    <div class="info-row"><div class="info-label">Name:</div><div class="info-value">${escapeHtml(t.name)}</div></div>
+                    <div class="info-row"><div class="info-label">Mobile:</div><div class="info-value">${escapeHtml(t.mobile)}</div></div>
+                    <div class="info-row"><div class="info-label">Passport No:</div><div class="info-value">${escapeHtml(t.passport)}</div></div>
+                </div></div>
+                <div class="info-table"><div class="info-table-title">✈️ FLIGHT DETAILS</div><div class="info-table-content">
+                    <div class="info-row"><div class="info-label">Booking Date:</div><div class="info-value">${t.bookDate}</div></div>
+                    <div class="info-row"><div class="info-label">Flight Date:</div><div class="info-value">${t.flightDate}</div></div>
+                    <div class="info-row"><div class="info-label">Route:</div><div class="info-value">${escapeHtml(t.sector)}</div></div>
+                    <div class="info-row"><div class="info-label">Airlines:</div><div class="info-value">${escapeHtml(t.airlines)}</div></div>
+                </div></div>
+                <div class="info-table"><div class="info-table-title">💰 PAYMENT</div><div class="info-table-content">
+                    <div class="info-row"><div class="info-label">Total:</div><div class="info-value">${t.total} OMR</div></div>
+                    <div class="info-row"><div class="info-label">Paid:</div><div class="info-value">${t.paid} OMR</div></div>
+                    <div class="info-row"><div class="info-label">Due:</div><div class="info-value">${t.due} OMR</div></div>
+                    <div class="info-row"><div class="info-label">Method:</div><div class="info-value">${t.method}</div></div>
+                </div></div>
+                <div class="signature-area"><div class="sign-line">Signature</div></div>
+                <div style="text-align:center; font-size:9px;">Print: ${new Date().toLocaleString()}</div>
+            </div>
+            <div class="cut-line"></div>
+            <div class="print-copy">
+                <div class="print-copy-header">🏢 OFFICE COPY</div>
+                <div class="info-table"><div class="info-table-title">CUSTOMER INFO</div><div class="info-table-content">
+                    <div class="info-row"><div class="info-label">Name:</div><div class="info-value">${escapeHtml(t.name)}</div></div>
+                    <div class="info-row"><div class="info-label">Mobile:</div><div class="info-value">${escapeHtml(t.mobile)}</div></div>
+                    <div class="info-row"><div class="info-label">Passport:</div><div class="info-value">${escapeHtml(t.passport)}</div></div>
+                    <div class="info-row"><div class="info-label">Flight Date:</div><div class="info-value">${t.flightDate}</div></div>
+                    <div class="info-row"><div class="info-label">Total:</div><div class="info-value">${t.total} OMR</div></div>
+                    <div class="info-row"><div class="info-label">Paid:</div><div class="info-value">${t.paid} OMR</div></div>
+                    <div class="info-row"><div class="info-label">Due:</div><div class="info-value">${t.due} OMR</div></div>
+                    <div class="info-row"><div class="info-label">Method:</div><div class="info-value">${t.method}</div></div>
+                </div></div>
+                <div class="signature-area"><div class="sign-line">Signature</div></div>
+            </div>
+        </body>
+        </html>`;
+    }
+
+    function getPassportHTML(p) {
+        return `<!DOCTYPE html>
+        <html>
+        <head><meta charset="UTF-8"><title>NOOR PASSPORT</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { background: white; font-family: 'Poppins', Arial, sans-serif; padding: 2mm; }
+            .print-copy { border: 2px dashed #c6904a; padding: 5px; margin-bottom: 5px; }
+            .print-copy-header { text-align: right; font-size: 14px; font-weight: bold; color: #c6904a; margin-bottom: 3px; }
+            .logo-header { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; border-bottom: 2px solid #e0c3a0; padding-bottom: 5px; }
+            .logo-header img { max-width: 220px; width: 220px; height: auto; }
+            .company-info h2 { font-size: 35px; color: #1a4a6f; margin-bottom: 3px; line-height: 1.1; }
+            .company-info .address { font-size: 12px; color: #555; margin-bottom: 2px; }
+            .company-info .phone { font-size: 12px; color: #555; }
+            .info-table { border: 1px solid #e2c3a0; border-radius: 5px; margin-bottom: 5px; }
+            .info-table-title { background: #d4a574; padding: 4px 8px; font-weight: bold; font-size: 19px; color: white; }
+            .info-table-content { padding: 5px; }
+            .info-row { display: flex; margin-bottom: 4px; font-size: 21px; }
+            .info-label { width: 150px; font-weight: bold; font-size: 19px; }
+            .info-value { flex: 1; border-bottom: 0.5px dotted #ccc; padding-left: 5px; font-size: 18px; }
+            .signature-area { display: flex; justify-content: flex-end; margin-top: 8px; }
+            .sign-line { width: 150px; text-align: center; border-top: 1px solid #333; padding-top: 5px; font-size: 16px; }
+            .cut-line { text-align: center; border-top: 2px dashed #b8772e; margin: 3px 0; }
+            @media print { @page { size: A4; margin: 0; } body { margin: 0; padding: 1mm; } }
+        </style>
+        </head>
+        <body>
+            <div class="print-copy">
+                <div class="print-copy-header">📘 CUSTOMER COPY</div>
+                <div class="logo-header"><img src="${LOGO_URL}"><div class="company-info"><h2>NOOR TRAVELS & TOURISM</h2><div class="address">📍 AL SALAM STREET CARE PHONE, SALALAH, OMAN</div><div class="phone">📞 +968 92658290 | +968 90747060</div></div></div>
+                <div class="info-table"><div class="info-table-title">📘 PASSPORT APPLICATION</div><div class="info-table-content">
+                    <div class="info-row"><div class="info-label">Application Date:</div><div class="info-value">${p.date}</div></div>
+                    <div class="info-row"><div class="info-label">Bill Amount:</div><div class="info-value">${p.bill} OMR</div></div>
+                    <div class="info-row"><div class="info-label">Passport Number:</div><div class="info-value">${escapeHtml(p.passportNo)}</div></div>
+                    <div class="info-row"><div class="info-label">Oman Number:</div><div class="info-value">${escapeHtml(p.oman)}</div></div>
+                    <div class="info-row"><div class="info-label">Bangladesh Number:</div><div class="info-value">${escapeHtml(p.bd)}</div></div>
+                    <div class="info-row"><div class="info-label">Notes:</div><div class="info-value">${escapeHtml(p.notes)}</div></div>
+                </div></div>
+                <div class="signature-area"><div class="sign-line">Signature</div></div>
+                <div style="text-align:center; font-size:9px;">Print: ${new Date().toLocaleString()}</div>
+            </div>
+            <div class="cut-line"></div>
+            <div class="print-copy">
+                <div class="print-copy-header">🏢 OFFICE COPY</div>
+                <div class="info-table"><div class="info-table-title">PASSPORT RECORD</div><div class="info-table-content">
+                    <div class="info-row"><div class="info-label">Application Date:</div><div class="info-value">${p.date}</div></div>
+                    <div class="info-row"><div class="info-label">Bill Amount:</div><div class="info-value">${p.bill} OMR</div></div>
+                    <div class="info-row"><div class="info-label">Passport Number:</div><div class="info-value">${escapeHtml(p.passportNo)}</div></div>
+                    <div class="info-row"><div class="info-label">Oman Number:</div><div class="info-value">${escapeHtml(p.oman)}</div></div>
+                    <div class="info-row"><div class="info-label">BD Number:</div><div class="info-value">${escapeHtml(p.bd)}</div></div>
+                </div></div>
+                <div class="signature-area"><div class="sign-line">Staff Signature</div></div>
+            </div>
+        </body>
+        </html>`;
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    let today = new Date().toISOString().split('T')[0];
+    document.getElementById('tBookDate').value = today;
+    document.getElementById('tFlightDate').value = today;
+    document.getElementById('pDate').value = today;
+    renderTickets();
+    renderPassports();
+</script>
+</body>
+</html>
